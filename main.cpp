@@ -1,45 +1,34 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <unordered_map>
-#include <vector>
-
 using namespace std;
-
-string decrypt(const string &ciphertext, unordered_map<char, char> &key_map) {
-    string decrypted;
-    for (char ch : ciphertext) {
-        decrypted += key_map.count(ch) ? key_map[ch] : ch;
-    }
-    return decrypted;
-}
-
-void brute_force(const string &ciphertext) {
-    string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    vector<string> permutations;
-
-    do {
-        permutations.push_back(alphabet);
-    } while (next_permutation(alphabet.begin(), alphabet.end()));
-
-    for (const auto &perm : permutations) {
-        unordered_map<char, char> key_map;
-        for (size_t i = 0; i < alphabet.size(); ++i) {
-            key_map[alphabet[i]] = perm[i];
-        }
-        string decrypted_text = decrypt(ciphertext, key_map);
-        cout << "Key:" << perm << "Decrypted Text: " << decrypted_text << endl;
-    }
-}
-
 int main() {
-    string encrypted_message;
-    cout << "Enter the encrypted message: ";
-    cin >> encrypted_message;
+string key;
+    cin>>key;
+    string table[5][5];
+    string alpha="abcdefghijklmnopqrstuvwxz";
+    string rest="";
+    for(int i=0;i<key.length();i++) {
+        if(key[i]==alpha[i+1]) {
+           char c=key[i];
+            alpha.erase(c);
+        }
+    }
+    for(int i=0;i<5;i++) {
+        for (int j=0;j<5;j++) {
+            table[i][j]=key[i];
+            if(i==key.length()) {
+                table[i][j]=alpha[i];
+            }
 
-    for (char&c:encrypted_message)c=toupper(c);
+        }
+    }
+    for(int i=0;i<5;i++) {
+        for (int j=0;j<5;j++) {
+cout<<table[i][j]<<" ";
 
-    brute_force(encrypted_message);
+        }
+        cout<<"\n";
+    }
     return 0;
 }
-
